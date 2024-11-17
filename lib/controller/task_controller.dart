@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_todo_app/model/task_model.dart';
 
@@ -12,10 +13,19 @@ class TaskController extends GetxController {
 // add task
   Future<void> addTask(Task task) async {
     if (task.title.isNotEmpty) {
-      tasks.add(task);
-      
-      print("ajout de ${task.title}");
-      Get.back();
+      final int lastIndex = tasks.last.id;
+
+      if (lastIndex != -1) {
+        int next = lastIndex + 1;
+        tasks.add(Task(
+            id: next,
+            title: task.title,
+            description: task.description,
+            isCompleted: task.isCompleted));
+        kDebugMode ? print("ajout de ${task.title}") : null;
+        
+        Get.back();
+      }
     } else {
       Get.snackbar("Erreur d'ajout", "Le titre est vide");
     }

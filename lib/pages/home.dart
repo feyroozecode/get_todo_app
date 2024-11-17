@@ -36,9 +36,12 @@ class _HomePageState extends State<HomePage> {
                   width: screenWidth,
                   color: Theme.of(context).primaryColor,
                   child: const Center(
-                    child: Text('TaskyApp', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),),
-                  )
-              ),
+                    child: Text(
+                      'TaskyApp',
+                      style:
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+                    ),
+                  )),
               SizedBox(
                   height: screenHeight * 0.7,
                   child: FutureBuilder(
@@ -48,23 +51,24 @@ class _HomePageState extends State<HomePage> {
                           return const Text("Erreur de chargemenst des taches");
                         }
                         if (snapshot.hasData) {
-                          return Obx(() => 
-                          ListView.builder(
+                          return Obx(() => ListView.builder(
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (_, index) {
                                   final item = snapshot.data![index];
 
                                   return ListTile(
-                                    leading: Icon(Icons.task),
+                                    leading: CircleAvatar(
+                                      child: Text(item.id.toString()),
+                                    ),
                                     title: Text(item.title),
                                     subtitle: Text(item.description),
                                     trailing: IconButton(
-                                      onPressed: (){}, 
-                                      icon:Icon(
-                                        item.isCompleted ? Icons.check_box : Icons.check_box_outline_blank
-                                      ) 
-                                    ),
-
+                                        onPressed: () {
+                                          taskController.markCompleted(0);
+                                        },
+                                        icon: Icon(item.isCompleted
+                                            ? Icons.check_box
+                                            : Icons.check_box_outline_blank)),
                                   );
                                 },
                               ));
@@ -110,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                     onPressed: () {
                       Task task = Task(
-                          id: 0,
+                          id: 1,
                           title: taskTitle.text,
                           description: taskDescription.text,
                           isCompleted: false);
