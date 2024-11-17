@@ -19,22 +19,27 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
 
     final tasks = taskController.tasks.value;
 
     return Scaffold(
         appBar: AppBar(
           title: const Text('Get Todo App'),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: Scaffold(
           body: Column(
             children: [
               Container(
-                height: screenHeight * 0.2,
-                color: Colors.blue,
-                child: const Text('Applciation Todo'),
+                  height: screenHeight * 0.2,
+                  width: screenWidth,
+                  color: Theme.of(context).primaryColor,
+                  child: const Center(
+                    child: Text('TaskyApp', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),),
+                  )
               ),
-              Container(
+              SizedBox(
                   height: screenHeight * 0.7,
                   child: FutureBuilder(
                       future: taskController.getAllTask(),
@@ -43,13 +48,26 @@ class _HomePageState extends State<HomePage> {
                           return const Text("Erreur de chargemenst des taches");
                         }
                         if (snapshot.hasData) {
-                          return ListView.builder(
-                            itemBuilder: (_, index) {
-                              return ListTile(
-                                title: Text(snapshot.data![index].title),
-                              );
-                            },
-                          );
+                          return Obx(() => 
+                          ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (_, index) {
+                                  final item = snapshot.data![index];
+
+                                  return ListTile(
+                                    leading: Icon(Icons.task),
+                                    title: Text(item.title),
+                                    subtitle: Text(item.description),
+                                    trailing: IconButton(
+                                      onPressed: (){}, 
+                                      icon:Icon(
+                                        item.isCompleted ? Icons.check_box : Icons.check_box_outline_blank
+                                      ) 
+                                    ),
+
+                                  );
+                                },
+                              ));
                         } else {
                           return CircularProgressIndicator();
                         }
@@ -81,8 +99,8 @@ class _HomePageState extends State<HomePage> {
 
                     // description
                     TextField(
-                      controller: taskTitle,
-                      decoration: InputDecoration(
+                      controller: taskDescription,
+                      decoration: const InputDecoration(
                           hintText: 'Entrer le titre de la tache'),
                     ),
                   ],
@@ -98,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                           isCompleted: false);
                       taskController.addTask(task);
                     },
-                    icon: Icon(Icons.add))
+                    icon: const Icon(Icons.add))
               ],
             ));
   }

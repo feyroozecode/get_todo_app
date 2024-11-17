@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.cursorStyle": "block",
+    // color
+    "terminal.integrated.tabs.defaultColor": "terminal.ansiBlue"
+}
