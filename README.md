@@ -1,6 +1,5 @@
 # get_todo_app
-
-A new Flutter project.
+A Simple Flutter todo App using Getx .
 
 ## Getting Started
 
